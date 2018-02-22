@@ -5,8 +5,9 @@
             (function() {
 
 
-                function receiveMessage() {
+                function receiveMessage(event) {
 
+                    console.log("event - ", event)
                     if (window.opener) {
 
                         console.log("window.opener - ", window.opener)
