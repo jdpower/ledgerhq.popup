@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- bootstrap CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" rel="stylesheet">
+        <link rel="shortcut icon" href="images/favicon.ico" />
+        <link href="css/main.css" rel="stylesheet">
+        <script src="js/bundles/TransportBundle.js"></script>
+        <script src="js/bundles/BtcBundle.js"></script>
+        <script src="js/bundles/EthBundle.js"></script>
+        <!-- <script src="js/ethereumjs-tx-1.3.3.min.js"></script> -->
+        <script src="js/popup.js" />
         <script>
             (function() {
 
@@ -8,18 +19,16 @@
                 function receiveMessage() {
 
                     if (window.opener) {
-
                         console.log("window.opener - ", window.opener)
                         window.opener.postMessage("handshake", "*")
                     }
 
                     window.addEventListener("message", function(event) {
-
                         console.log("event.data - ", event.data)
-                        if (event.data.action === "value") {
+                        if (event.data.action === "requestBtcAddress") {
                             const response = {
                                 type: "sender",
-                                action: "onLoad",
+                                action: event.data.action,
                                 message: "success",
                                 uniqueId: event.data.uniqueId
                             }
@@ -27,14 +36,6 @@
                             event.source.postMessage(response, origin)
                         }
                     })
-
-                    // const response = {
-                    //     type: "sender",
-                    //     action: "onLoad",
-                    //     message: "success"
-                    // }
-                    // const origin = "null" !== event.origin ? event.origin : "*"
-                    // event.source.postMessage(response, origin)
                 }
 
                 window.addEventListener("load", receiveMessage)
@@ -60,6 +61,23 @@
         </script>
     </head>
     <body>
-Popup
+    
+    <header class="container-fluid text-center">
+        <div class="col-sm-12">
+            <h1>ANX LedgerHQ Popup</h1>
+        </div>
+    </header>
+    <div class="container">    
+        <div class="row">
+            <div class="col-sm-12">
+                <pre id="result"></pre>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid text-center">
+        <div class="col-sm-12">
+            <p>ANX LedgerHQ Popup</p>
+        </div>
+    </footer>
     </body>
 </html>
