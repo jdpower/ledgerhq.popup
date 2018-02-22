@@ -13,7 +13,7 @@
                         window.opener.postMessage("handshake", "*")
                     }
 
-                    window.addEventListener("ledgerconnect", function(event) {
+                    window.addEventListener("message", function(event) {
 
                         console.log("event.data - ", event.data)
                         if (event.data.action === "value") {
