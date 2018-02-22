@@ -11,14 +11,32 @@
         window.addEventListener("message", function(event) {
             console.log("event.data - ", event.data)
             if (event.data.action === "requestBtcAddress") {
-                const response = {
+                const btcPath = event.data.path
+                const origin = "null" !== event.origin ? event.origin : "*"
+                // event.source.postMessage(response, origin)
+                if (btcPath === "") throw "no wallet path"
+
+                let response = {
                     type: "sender",
                     action: event.data.action,
                     message: "success",
                     uniqueId: event.data.uniqueId
                 }
-                const origin = "null" !== event.origin ? event.origin : "*"
-                event.source.postMessage(response, origin)
+                getBtcAddress(btcPath).then(result => {
+
+                    console.log(result)
+                    displayResult(result)
+                    sendMessageParentWindow("sendtBtcAddress", { detail: result })
+                    response.data = result
+                    event.source.postMessage(response, origin)
+                }).catch(error => {
+
+                    console.error(error)
+                    displayResult(error)
+                    response.message = "failed"
+                    response.data = result
+                    sendMessageParentWindow("errortBtcAddress", { detail: error })
+                })
             }
         })
     }
