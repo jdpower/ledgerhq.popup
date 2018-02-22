@@ -1,3 +1,50 @@
+(function() {
+
+
+    function receiveMessage() {
+
+        if (window.opener) {
+            console.log("window.opener - ", window.opener)
+            window.opener.postMessage("handshake", "*")
+        }
+
+        window.addEventListener("message", function(event) {
+            console.log("event.data - ", event.data)
+            if (event.data.action === "requestBtcAddress") {
+                const response = {
+                    type: "sender",
+                    action: event.data.action,
+                    message: "success",
+                    uniqueId: event.data.uniqueId
+                }
+                const origin = "null" !== event.origin ? event.origin : "*"
+                event.source.postMessage(response, origin)
+            }
+        })
+    }
+
+    window.addEventListener("load", receiveMessage)
+
+    // window.addEventListener("load", function(){
+        
+    //     if (window.opener) {
+    //         console.log("window.opener - ", window.opener)
+    //         window.opener.postMessage("handshake", "*")
+    //     }
+
+    //     window.addEventListener("message", function(event) {
+
+    //         console.log("event.data - ", event.data)
+
+    //         const origin = "null" !== event.origin ? event.origin : "*"
+    //         if (event.data.key === "value") {
+    //             event.source.postMessage({done:1}, origin)
+    //         }
+    //     })
+    // })
+})()
+
+
 function verifyPackage() {
 
     console.log(Transport.default)
