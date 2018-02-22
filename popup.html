@@ -4,24 +4,41 @@
         <script>
             (function() {
 
-                window.addEventListener("load", function(){
-                    //...
-                    if (window.opener) {
-                        console.log("window.opener - ", window.opener)
-                        window.opener.postMessage("handshake", "*");
+
+                function receiveMessage(event) {
+
+                    console.log("event: ", event)
+
+                    const response = {
+                        type: "sender",
+                        action: "onLoad",
+                        message: "success",
+                        id: event.data.detail.id
                     }
+                    const origin = "null" !== event.origin ? event.origin : "*"
+                    event.source.postMessage(message, origin)
+                }
 
-                    window.addEventListener("message", function(event) {
+                window.addEventListener("load", receiveMessage, false)
 
-                        console.log("event.data - ", event.data);
+                // window.addEventListener("load", function(){
+                    
+                //     if (window.opener) {
+                //         console.log("window.opener - ", window.opener)
+                //         window.opener.postMessage("handshake", "*")
+                //     }
 
-                        const origin = "null" !== event.origin ? event.origin : "*";
-                        if (event.data.key === "value") {
-                            event.source.postMessage({done:1}, origin);
-                        }
-                    });
-                });
-            })();
+                //     window.addEventListener("message", function(event) {
+
+                //         console.log("event.data - ", event.data)
+
+                //         const origin = "null" !== event.origin ? event.origin : "*"
+                //         if (event.data.key === "value") {
+                //             event.source.postMessage({done:1}, origin)
+                //         }
+                //     })
+                // })
+            })()
         </script>
     </head>
     <body>
