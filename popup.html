@@ -5,17 +5,21 @@
             (function() {
 
 
-                function receiveMessage(event) {
+                function receiveMessage() {
 
-                    console.log("event: ", event)
+                    if (window.opener) {
 
-                    const response = {
-                        type: "sender",
-                        action: "onLoad",
-                        message: "success"
+                        console.log("window.opener - ", window.opener)
+                        window.opener.postMessage("handshake", "*")
                     }
-                    const origin = "null" !== event.origin ? event.origin : "*"
-                    event.source.postMessage(response, origin)
+
+                    // const response = {
+                    //     type: "sender",
+                    //     action: "onLoad",
+                    //     message: "success"
+                    // }
+                    // const origin = "null" !== event.origin ? event.origin : "*"
+                    // event.source.postMessage(response, origin)
                 }
 
                 window.addEventListener("load", receiveMessage, false)
