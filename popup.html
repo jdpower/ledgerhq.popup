@@ -13,7 +13,7 @@
 
                     window.addEventListener("message", function(event) {
 
-                        console.log(JSON.stringify(event.data));
+                        console.log("event.data - ", event.data);
 
                         const origin = "null" !== event.origin ? event.origin : "*";
                         if (event.data.key === "value") {
