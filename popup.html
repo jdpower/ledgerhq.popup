@@ -20,7 +20,8 @@
                             const response = {
                                 type: "sender",
                                 action: "onLoad",
-                                message: "success"
+                                message: "success",
+                                uniqueId: event.data.uniqueId
                             }
                             const origin = "null" !== event.origin ? event.origin : "*"
                             event.source.postMessage(response, origin)
