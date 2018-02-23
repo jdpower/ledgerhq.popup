@@ -5,38 +5,24 @@
 
         if (window.opener) {
             console.log("window.opener - ", window.opener)
-            window.opener.postMessage("handshake", "*")
+            window.opener.postMessage("inithandshake", "*")
         }
 
         window.addEventListener("message", function(event) {
+
             console.log("event.data - ", event.data)
-            if (event.data.action === "requestBtcAddress") {
-                const btcPath = event.data.path
-                const origin = "null" !== event.origin ? event.origin : "*"
+            const path = event.data.path
+            const origin = "null" !== event.origin ? event.origin : "*"
+
+            if (event.data.action === "reqBtcAddress") {    
                 // event.source.postMessage(response, origin)
-                if (btcPath === "") throw "no wallet path"
-
-                let response = {
-                    type: "sender",
-                    action: event.data.action,
-                    message: "success",
-                    uniqueId: event.data.uniqueId
-                }
-                getBtcAddress(btcPath).then(result => {
-
-                    console.log(result)
-                    displayResult(result)
-                    sendMessageParentWindow("sendtBtcAddress", { detail: result })
-                    response.data = result
-                    event.source.postMessage(response, origin)
-                }).catch(error => {
-
-                    console.error(error)
-                    displayResult(error)
-                    response.message = "failed"
-                    response.data = result
-                    sendMessageParentWindow("errortBtcAddress", { detail: error })
-                })
+                onGetBtcAddress(path, event, origin)
+            } else if (event.data.action === "reqEthAddress") {
+                // event.source.postMessage(response, origin)
+                onGetEthAddress(path, event, origin)
+            } else if (event.data.action === "reqSignEthTransaction") {
+                // event.source.postMessage(response, origin)
+                onGetEthAddress(path, event, origin)
             }
         })
     }
@@ -93,23 +79,45 @@ const getBtcAddress = async (path) => {
 }
 
 
-function onGetBtcAddress(btcPath) {
+function onGetBtcAddress(btcPath, event, origin) {
 
     if (btcPath === "") throw "no wallet path"
 
-    getBtcAddress(btcPath)
-        .then(result => {
+    let response = {
+        from: window.name,
+        action: event.data.action,
+        uniqueId: event.data.uniqueId
+    }
 
-            console.log(result)
-            displayResult(result)
-            sendMessageParentWindow("sendtBtcAddress", { detail: result })
-        })
-        .catch(error => {
+    getBtcAddress(btcPath).then(result => {
 
-            console.error(error)
-            displayResult(error)
-            sendMessageParentWindow("errortBtcAddress", { detail: error })
-        })
+        displayResult(result)
+        response.message = "success"
+        response.data = result
+        sendMessageToParentWindow(response, event, origin)
+    }).catch(error => {
+
+        displayResult(error)
+        response.message = "failed"
+        response.data = error
+        sendMessageToParentWindow(response, event, origin)
+    })
+
+    // if (btcPath === "") throw "no wallet path"
+
+    // getBtcAddress(btcPath)
+    //     .then(result => {
+
+    //         console.log(result)
+    //         displayResult(result)
+    //         sendMessageParentWindow("sendtBtcAddress", { detail: result })
+    //     })
+    //     .catch(error => {
+
+    //         console.error(error)
+    //         displayResult(error)
+    //         sendMessageParentWindow("errortBtcAddress", { detail: error })
+    //     })
 
 }
 
@@ -123,30 +131,85 @@ const getEthAddress = async (path) => {
 }
 
 
-function onGetEthAddress(ethPath) {
+function onGetEthAddress(ethPath, event, origin) {
 
     if (ethPath === "") throw "no wallet path"
+
+    let response = {
+        from: window.name,
+        action: event.data.action,
+        uniqueId: event.data.uniqueId
+    }
 
     getEthAddress(ethPath)
         .then(result => {
 
-            console.log(result)
             displayResult(result)
-            sendMessageParentWindow("sendEthAddress", { detail: result })
+            response.message = "success"
+            response.data = result
+            sendMessageToParentWindow(response, event, origin)
         })
         .catch(error => {
 
-            console.error(error)
             displayResult(error)
-            sendMessageParentWindow("errorEthAddress", { detail: error })
+            response.message = "failed"
+            response.data = error
+            sendMessageToParentWindow(response, event, origin)
         })
 
 }
 
 
-function sendMessageParentWindow(action, message) {
+const signEthTransaction = async (path, txParams) => {
 
-    console.log(action, message)
+    const transport = await getDevice(path)
+    const eth = new AppEth.default(transport)
+    const serializedTx = serializeTx(txParams)
+    console.log(serializedTx)
+    
+    const result = await eth.signTransaction(path, serializedTx)
+    return result
+}
+
+
+function onEthSignTransaction(ethPath, txParams) {
+
+    if (ethPath === "") throw "no wallet path"
+    const _txParams = JSON.parse(txParams)
+
+    let response = {
+        from: window.name,
+        action: event.data.action,
+        uniqueId: event.data.uniqueId
+    }
+
+    signEthTransaction(ethPath, _txParams)
+        .then(result => {
+            
+            displayResult(result)
+            const data = {
+                tx: _txParams,
+                result: result
+            }
+
+            response.message = "success"
+            response.data = data
+            sendMessageToParentWindow(response, event, origin)
+        })
+        .catch(error => {
+
+            displayResult(error)
+            response.message = "failed"
+            response.data = error
+            sendMessageToParentWindow(response, event, origin)
+        })
+}
+
+
+function sendMessageToParentWindow(response, event, origin) {
+
+    console.log(response)
+    event.source.postMessage(response, origin)
 }
 
 
