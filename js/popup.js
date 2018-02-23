@@ -22,7 +22,7 @@
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
                 // event.source.postMessage(response, origin)
-                onGetEthAddress(path, event, origin)
+                onEthSignTransaction(path, event.data.txParams, event, origin)
             }
         })
     }
@@ -172,7 +172,7 @@ const signEthTransaction = async (path, txParams) => {
 }
 
 
-function onEthSignTransaction(ethPath, txParams) {
+function onEthSignTransaction(ethPath, txParams, event, origin) {
 
     if (ethPath === "") throw "no wallet path"
     const _txParams = JSON.parse(txParams)
