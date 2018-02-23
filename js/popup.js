@@ -174,7 +174,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 function sendMessageToParentWindow(response, event, origin) {
 
     console.log(response)
-    event.source.postMessage(response, origin)
+    event.source.postMessage(JSON.parse(JSON.stringify(response)), origin)
 }
 
 
