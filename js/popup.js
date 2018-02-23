@@ -15,37 +15,16 @@
             const origin = "null" !== event.origin ? event.origin : "*"
 
             if (event.data.action === "reqBtcAddress") {    
-                // event.source.postMessage(response, origin)
                 onGetBtcAddress(path, event, origin)
             } else if (event.data.action === "reqEthAddress") {
-                // event.source.postMessage(response, origin)
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
-                // event.source.postMessage(response, origin)
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             }
         })
     }
 
     window.addEventListener("load", receiveMessage)
-
-    // window.addEventListener("load", function(){
-        
-    //     if (window.opener) {
-    //         console.log("window.opener - ", window.opener)
-    //         window.opener.postMessage("handshake", "*")
-    //     }
-
-    //     window.addEventListener("message", function(event) {
-
-    //         console.log("event.data - ", event.data)
-
-    //         const origin = "null" !== event.origin ? event.origin : "*"
-    //         if (event.data.key === "value") {
-    //             event.source.postMessage({done:1}, origin)
-    //         }
-    //     })
-    // })
 })()
 
 
@@ -91,19 +70,19 @@ function onGetBtcAddress(btcPath, event, origin) {
 
     getBtcAddress(btcPath).then(result => {
 
-        displayResult(result)
+        displayResult(event.data.action, result)
         response.message = "success"
         response.data = result
         sendMessageToParentWindow(response, event, origin)
         window.close()
     }).catch(error => {
 
-        displayResult(error)
+        displayResult(event.data.action, error)
         response.message = "failed"
         response.data = error
         sendMessageToParentWindow(response, event, origin)
     })
-    
+
 }
 
 
@@ -199,7 +178,22 @@ function sendMessageToParentWindow(response, event, origin) {
 }
 
 
-function displayResult(result) {
+function displayResult(action, result) {
 
-    document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
+    // result is an JSON object
+    // format error before displaying to user
+    // 
+    console.log(result)
+    let messageToDisplay = {}
+    const type = result.metaData.type
+    
+    switch (type) {
+        case "DEVICE_INELIGIBLE":
+            messageToDisplay = {
+                request: action,
+                message: "please select the correct app, as in BTC / Bcash / ETH"
+            } 
+            break
+    }
+    document.getElementById("result").innerHTML = JSON.stringify(messageToDisplay, undefined, 4)
 }
