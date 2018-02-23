@@ -70,15 +70,15 @@ function onGetBtcAddress(btcPath, event, origin) {
 
     getBtcAddress(btcPath).then(result => {
 
-        const data = {
-            metaData: {
-                type: event.data.action,
-                address: result
-            }
-        }
-        displayResult(event.data.action, data)
+        // const data = {
+        //     metaData: {
+        //         type: event.data.action,
+        //         address: result
+        //     }
+        // }
+        // displayResult(event.data.action, data)
         response.message = "success"
-        response.data = result
+        response.address = result
         sendMessageToParentWindow(response, event, origin)
         window.close()
     }).catch(error => {
