@@ -95,6 +95,7 @@ function onGetBtcAddress(btcPath, event, origin) {
         response.message = "success"
         response.data = result
         sendMessageToParentWindow(response, event, origin)
+        window.close()
     }).catch(error => {
 
         displayResult(error)
@@ -102,23 +103,7 @@ function onGetBtcAddress(btcPath, event, origin) {
         response.data = error
         sendMessageToParentWindow(response, event, origin)
     })
-
-    // if (btcPath === "") throw "no wallet path"
-
-    // getBtcAddress(btcPath)
-    //     .then(result => {
-
-    //         console.log(result)
-    //         displayResult(result)
-    //         sendMessageParentWindow("sendtBtcAddress", { detail: result })
-    //     })
-    //     .catch(error => {
-
-    //         console.error(error)
-    //         displayResult(error)
-    //         sendMessageParentWindow("errortBtcAddress", { detail: error })
-    //     })
-
+    
 }
 
 
@@ -148,6 +133,7 @@ function onGetEthAddress(ethPath, event, origin) {
             response.message = "success"
             response.data = result
             sendMessageToParentWindow(response, event, origin)
+            window.close()
         })
         .catch(error => {
 
