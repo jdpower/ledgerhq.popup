@@ -186,13 +186,19 @@ function displayResult(action, result) {
     console.log(result)
     let messageToDisplay = {}
     const type = result.metaData.type
-    
+
     switch (type) {
         case "DEVICE_INELIGIBLE":
             messageToDisplay = {
                 request: action,
                 message: "please select the correct app, as in BTC / Bcash / ETH"
             } 
+            break
+        default:
+            messageToDisplay = {
+                request: action,
+                message: result
+            }
             break
     }
     document.getElementById("result").innerHTML = JSON.stringify(messageToDisplay, undefined, 4)
