@@ -22,7 +22,7 @@
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
                 // event.source.postMessage(response, origin)
-                onEthSignTransaction(path, event.data.serializedTx, event, origin)
+                onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             }
         })
     }
@@ -172,10 +172,10 @@ const signEthTransaction = async (path, serializedTx) => {
 }
 
 
-function onEthSignTransaction(ethPath, serializedTx, event, origin) {
+function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 
     if (ethPath === "") throw "no wallet path"
-    // const _txParams = JSON.parse(serializedTx)
+    const _txParams = JSON.parse(txParams)
 
     let response = {
         from: window.name,
