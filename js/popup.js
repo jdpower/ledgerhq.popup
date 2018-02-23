@@ -22,7 +22,7 @@
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
                 // event.source.postMessage(response, origin)
-                onEthSignTransaction(path, event.data.txParams, event, origin)
+                onEthSignTransaction(path, event.data.serializedTx, event, origin)
             }
         })
     }
@@ -160,11 +160,11 @@ function onGetEthAddress(ethPath, event, origin) {
 }
 
 
-const signEthTransaction = async (path, txParams) => {
+const signEthTransaction = async (path, serializedTx) => {
 
     const transport = await getDevice(path)
     const eth = new AppEth.default(transport)
-    const serializedTx = serializeTx(txParams)
+    // const serializedTx = serializeTx(serializedTx)
     console.log(serializedTx)
     
     const result = await eth.signTransaction(path, serializedTx)
@@ -172,10 +172,10 @@ const signEthTransaction = async (path, txParams) => {
 }
 
 
-function onEthSignTransaction(ethPath, txParams, event, origin) {
+function onEthSignTransaction(ethPath, serializedTx, event, origin) {
 
     if (ethPath === "") throw "no wallet path"
-    const _txParams = JSON.parse(txParams)
+    // const _txParams = JSON.parse(serializedTx)
 
     let response = {
         from: window.name,
@@ -183,7 +183,7 @@ function onEthSignTransaction(ethPath, txParams, event, origin) {
         uniqueId: event.data.uniqueId
     }
 
-    signEthTransaction(ethPath, _txParams)
+    signEthTransaction(ethPath, serializedTx)
         .then(result => {
             
             displayResult(result)
