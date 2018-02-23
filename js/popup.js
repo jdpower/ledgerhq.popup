@@ -114,7 +114,7 @@ function onGetEthAddress(ethPath, event, origin) {
     getEthAddress(ethPath)
         .then(result => {
 
-            displayResult(result)
+            // displayResult(result)
             response.message = "success"
             response.data = result
             sendMessageToParentWindow(response, event, origin)
@@ -190,22 +190,22 @@ function displayResult(action, result) {
     // format error before displaying to user
     // 
     console.log(result)
-    let messageToDisplay = {}
-    const type = result.metaData.type
+    // let messageToDisplay = {}
+    // const type = result.metaData.type
 
-    switch (type) {
-        case "DEVICE_INELIGIBLE":
-            messageToDisplay = {
-                request: action,
-                message: "please select the correct app, as in BTC / Bcash / ETH"
-            } 
-            break
-        default:
-            messageToDisplay = {
-                request: action,
-                message: result
-            }
-            break
-    }
-    document.getElementById("result").innerHTML = JSON.stringify(messageToDisplay, undefined, 4)
+    // switch (type) {
+    //     case "DEVICE_INELIGIBLE":
+    //         messageToDisplay = {
+    //             request: action,
+    //             message: "please select the correct app, as in BTC / Bcash / ETH"
+    //         } 
+    //         break
+    //     default:
+    //         messageToDisplay = {
+    //             request: action,
+    //             message: result
+    //         }
+    //         break
+    // }
+    document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
 }
