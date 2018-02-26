@@ -169,7 +169,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
         })
         .catch(error => {
 
-            // displayResult(error)
+            displayResult(error)
             response.message = "failed"
             response.data = error
             sendMessageToParentWindow(response, event, origin)
