@@ -146,7 +146,7 @@ const signEthTransaction = async (path, serializedTx) => {
 function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 
     if (ethPath === "") throw "no wallet path"
-    const _txParams = JSON.parse(txParams)
+    // const _txParams = JSON.parse(txParams)
 
     let response = {
         from: window.name,
