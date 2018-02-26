@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
 
     function receiveMessage() {
@@ -8,13 +8,13 @@
             window.opener.postMessage("inithandshake", "*")
         }
 
-        window.addEventListener("message", function(event) {
+        window.addEventListener("message", function (event) {
 
             console.log("event.data - ", event.data)
             const path = event.data.path
             const origin = "null" !== event.origin ? event.origin : "*"
 
-            if (event.data.action === "reqBtcAddress") {    
+            if (event.data.action === "reqBtcAddress") {
                 onGetBtcAddress(path, event, origin)
             } else if (event.data.action === "reqEthAddress") {
                 onGetEthAddress(path, event, origin)
@@ -116,7 +116,7 @@ function onGetEthAddress(ethPath, event, origin) {
 
             // displayResult(result)
             response.message = "success"
-            response.data = result
+            response.address = result
             sendMessageToParentWindow(response, event, origin)
             window.close()
         })
@@ -137,7 +137,7 @@ const signEthTransaction = async (path, serializedTx) => {
     const eth = new AppEth.default(transport)
     // const serializedTx = serializeTx(serializedTx)
     console.log(serializedTx)
-    
+
     const result = await eth.signTransaction(path, serializedTx)
     return result
 }
@@ -156,8 +156,8 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 
     signEthTransaction(ethPath, serializedTx)
         .then(result => {
-            
-            displayResult(result)
+
+            displayResult(event.data.action, result)
             const data = {
                 tx: _txParams,
                 result: result
@@ -169,7 +169,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
         })
         .catch(error => {
 
-            displayResult(error)
+            // displayResult(error)
             response.message = "failed"
             response.data = error
             sendMessageToParentWindow(response, event, origin)
