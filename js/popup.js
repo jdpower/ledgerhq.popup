@@ -159,7 +159,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 
             displayResult(event.data.action, result)
             const data = {
-                tx: _txParams,
+                tx: txParams,
                 result: result
             }
 
