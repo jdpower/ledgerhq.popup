@@ -164,6 +164,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
             }
 
             response.message = "success"
+            response.success = true
             response.data = data
             sendMessageToParentWindow(response, event, origin)
         })
@@ -171,6 +172,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 
             displayResult(error)
             response.message = "failed"
+            response.success = false
             response.data = error
             sendMessageToParentWindow(response, event, origin)
         })
