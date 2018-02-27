@@ -157,6 +157,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
     signEthTransaction(ethPath, serializedTx)
         .then(result => {
 
+            result.v = parseInt(result.v, 16)
             displayResult(event.data.action, result)
             const data = {
                 tx: txParams,
