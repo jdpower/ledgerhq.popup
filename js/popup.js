@@ -21,7 +21,7 @@
             } else if (event.data.action === "reqSignEthTransaction") {
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             } else if (event.data.action === "reqSignBtcTransaction") {
-                onBtcSignTransaction(path, event.data.UTXOs)
+                onBtcSignTransaction(path, event.data.utxo)
             }
         })
     }
