@@ -210,6 +210,8 @@ function onBtcSignTransaction(path, UTXOs) {
 
     signBtcTrasaction(path, UTXOs).then(result => {
         console.log("result - ", result)
+    }).catch(error => {
+        console.error("error - ", error)
     })
 }
 
