@@ -20,6 +20,8 @@
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
+            } else if (event.data.action === "reqSignBtcTransaction") {
+                onBtcSignTransaction(path, event.data.UTXOs)
             }
         })
     }
@@ -135,7 +137,6 @@ const signEthTransaction = async (path, serializedTx) => {
 
     const transport = await getDevice(path)
     const eth = new AppEth.default(transport)
-    // const serializedTx = serializeTx(serializedTx)
     console.log(serializedTx)
 
     const result = await eth.signTransaction(path, serializedTx)
@@ -177,6 +178,48 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
             response.data.result.success = false
             sendMessageToParentWindow(response, event, origin)
         })
+}
+
+
+const splitBtcTransaction = async (btc, transactionHex) => {
+
+    const tx = await btc.splitTransaction(transactionHex, false, false)
+    console.log("splitBtcTransaction tx - ", tx)
+    return tx
+}
+
+const serializeTransactionOutputs = async () => {
+
+
+}
+
+const signBtcTrasaction = async (path, UTXOs) => {
+// const signBtcTrasaction = async (path, inputs, outputs) => {
+
+    const transport = await getDevice(path)
+    const btc = new AppBtc.default(transport)
+    
+    console.log("UTXOs - ", UTXOs)
+
+    const tx = await splitBtcTransaction(btc, toHex(UTXOs[0]))
+    console.log("returned tx - ", tx)
+}
+
+
+function onBtcSignTransaction(path, UTXOs) {
+
+    signBtcTrasaction(path, UTXOs).then(result => {
+        console.log("result - ", result)
+    })
+}
+
+
+function toHex(str) {
+	var hex = ""
+	for(var i = 0; i < str.length; i++) {
+		hex += ''+str.charCodeAt(i).toString(16)
+	}
+	return hex
 }
 
 
