@@ -201,7 +201,7 @@ const signBtcTrasaction = async (path, UTXOs) => {
     
     console.log("UTXOs - ", UTXOs)
 
-    const tx = await splitBtcTransaction(btc, toHex(UTXOs[0]))
+    const tx = await splitBtcTransaction(btc, toHex(JSON.stringify(UTXOs[0])))
     console.log("returned tx - ", tx)
 }
 
