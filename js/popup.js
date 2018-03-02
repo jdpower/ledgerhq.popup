@@ -191,7 +191,7 @@ const createPaymentTransactionNew = async (path, inputs, changePath, outputScrip
     console.log("changePath - ", changePath)
     console.log("outputScriptHex - ", outputScriptHex)
 
-    const signedTx = await btc.createPaymentTransactionNew(inputs, associatedKeysets, changePath, outputScriptHex).then( result => {
+    const signedTx = await btc.createPaymentTransactionNew(inputs, path.split('m/')[1], changePath, outputScriptHex).then( result => {
 
         console.log(result)
         return result
