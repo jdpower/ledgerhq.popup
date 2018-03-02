@@ -230,7 +230,7 @@ const signBtcTrasaction = async (path, UTXOs) => {
 }
 
 
-function onBtcSignTransaction(path, UTXOs, tx) {
+function onBtcSignTransaction(path, UTXOs, tx, outputScript) {
 
     console.log("UTXOs - ", UTXOs)
     console.log("tx - ", tx)
