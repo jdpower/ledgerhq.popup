@@ -21,7 +21,7 @@
             } else if (event.data.action === "reqSignEthTransaction") {
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             } else if (event.data.action === "reqSignBtcTransaction") {
-                onBtcSignTransaction(path, event.data.utxo, event.data.tx)
+                onBtcSignTransaction(path, event.data.utxo, event.data.tx, event.data.outputScript)
             }
         })
     }
@@ -181,6 +181,23 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 }
 
 
+const createPaymentTransactionNew = async (path, inputs, changePath, outputScriptHex) => {
+
+    const transport = await getDevice(path)
+    const btc = new AppBtc.default(transport)
+
+    console.log("inputs - ", inputs)
+    console.log("associatedKeysets - ", path)
+    console.log("changePath - ", changePath)
+    console.log("outputScriptHex - ", outputScriptHex)
+
+    const signedTx = await btc.createPaymentTransactionNew(inputs, associatedKeysets, changePath, outputScriptHex).then( result => {
+
+        console.log(result)
+        return result
+    })
+}
+
 const splitBtcTransaction = async (btc, transactionHex) => {
 
     const tx = await btc.splitTransaction(transactionHex, false, false)
@@ -218,11 +235,15 @@ function onBtcSignTransaction(path, UTXOs, tx) {
     console.log("UTXOs - ", UTXOs)
     console.log("tx - ", tx)
 
-    _serializeTransaction(path, tx).then(result => {
-        console.log("serializeTransaction result - ", result)
-    }).catch(error => {
-        console.error("serializeTransaction error - ", error)
-    })
+    
+    createPaymentTransactionNew(path, tx, path, undefined, toHex(outputScript)
+
+
+    // _serializeTransaction(path, tx).then(result => {
+    //     console.log("serializeTransaction result - ", result)
+    // }).catch(error => {
+    //     console.error("serializeTransaction error - ", error)
+    // })
 
 
     // signBtcTrasaction(path, UTXOs).then(result => {
