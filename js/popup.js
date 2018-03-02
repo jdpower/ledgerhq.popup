@@ -195,12 +195,13 @@ const _serializeTransaction = async (path, transaction) => {
     
     console.log("transaction - ", transaction)
 
+    transaction.version = new Buffer(0)
+
     const tx = await btc.serializeTransaction(transaction)
     console.log("_serializeTransaction - ", tx)
 }
 
 const signBtcTrasaction = async (path, UTXOs) => {
-// const signBtcTrasaction = async (path, inputs, outputs) => {
 
     const transport = await getDevice(path)
     const btc = new AppBtc.default(transport)
@@ -224,11 +225,11 @@ function onBtcSignTransaction(path, UTXOs, tx) {
     })
 
 
-    signBtcTrasaction(path, UTXOs).then(result => {
-        console.log("signBtcTrasaction result - ", result)
-    }).catch(error => {
-        console.error("signBtcTrasaction error - ", error)
-    })
+    // signBtcTrasaction(path, UTXOs).then(result => {
+    //     console.log("signBtcTrasaction result - ", result)
+    // }).catch(error => {
+    //     console.error("signBtcTrasaction error - ", error)
+    // })
 }
 
 
