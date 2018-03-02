@@ -236,7 +236,7 @@ function onBtcSignTransaction(path, UTXOs, tx) {
     console.log("tx - ", tx)
 
     
-    createPaymentTransactionNew(path, tx, path, undefined, toHex(outputScript)
+    createPaymentTransactionNew(path, tx, path, undefined, toHex(outputScript))
 
 
     // _serializeTransaction(path, tx).then(result => {
