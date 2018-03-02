@@ -195,7 +195,7 @@ const _serializeTransaction = async (path, transaction) => {
     
     console.log("transaction - ", transaction)
 
-    transaction.version = Buffer("0")
+    transaction.version = Buffer.Buffer("0")
 
     const tx = await btc.serializeTransaction(transaction)
     console.log("_serializeTransaction - ", tx)
