@@ -181,7 +181,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
 }
 
 
-const createPaymentTransactionNew = async (path, inputs, changePath, outputScriptHex) => {
+const _createPaymentTransactionNew = async (path, inputs, changePath, outputScript) => {
 
     const transport = await getDevice(path)
     const btc = new AppBtc.default(transport)
@@ -189,9 +189,9 @@ const createPaymentTransactionNew = async (path, inputs, changePath, outputScrip
     console.log("inputs - ", inputs)
     console.log("associatedKeysets - ", path)
     console.log("changePath - ", changePath)
-    console.log("outputScriptHex - ", outputScriptHex)
+    console.log("outputScript - ", outputScript)
 
-    const signedTx = await btc.createPaymentTransactionNew(JSON.stringify(inputs), path.split('m/')[1], changePath, outputScriptHex).then( result => {
+    const signedTx = await btc.createPaymentTransactionNew(JSON.stringify(inputs), path.split('m/')[1], changePath, outputScript).then( result => {
 
         console.log(result)
         return result
@@ -236,7 +236,7 @@ function onBtcSignTransaction(path, UTXOs, tx, outputScript) {
     console.log("tx - ", tx)
 
     
-    createPaymentTransactionNew(path, tx, path, undefined, toHex(outputScript))
+    _createPaymentTransactionNew(path, tx, path, undefined, outputScript)
 
 
     // _serializeTransaction(path, tx).then(result => {
