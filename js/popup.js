@@ -253,7 +253,12 @@ function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScrip
     // console.log("outputScript - ", outputScript)
 
     
-    _createPaymentTransactionNew(path, inputs, undefined, outputScript).then(result => {
+    _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result, error) => {
+
+        if (error) {
+            displayResult(error)
+            throw new Error(error.message)
+        }
 
         displayResult(result)
         console.log(result)
