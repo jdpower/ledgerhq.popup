@@ -232,11 +232,11 @@ const signBtcTrasaction = async (path, UTXOs) => {
 
 function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScript) {
 
-    console.log("UTXOs - ", UTXOs)
-    console.log("tx - ", tx)
-    console.log("transactions - ", transactions)
-    console.log("inputs - ", inputs)
-    console.log("outputScript - ", outputScript)
+    // console.log("UTXOs - ", UTXOs)
+    // console.log("tx - ", tx)
+    // console.log("transactions - ", transactions)
+    // console.log("inputs - ", inputs)
+    // console.log("outputScript - ", outputScript)
 
     
     _createPaymentTransactionNew(path, inputs, undefined, outputScript)
