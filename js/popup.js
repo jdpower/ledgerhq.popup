@@ -124,7 +124,7 @@ function onGetEthAddress(ethPath, event, origin) {
         })
         .catch(error => {
 
-            displayResult(error)
+            displayResult(event.data.action, error)
             response.message = "failed"
             response.data = error
             sendMessageToParentWindow(response, event, origin)
@@ -256,7 +256,7 @@ function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScrip
     
     _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
 
-        displayResult(result)
+        displayResult(event.data.action, result)
         console.log(result)
         // sendMessageToParentWindow(response, event, origin)
     }).catch(error => {
