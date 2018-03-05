@@ -198,7 +198,7 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
             console.log(attr)
             if (attr.version) {
                 console.log("before version attr - ", attr)
-                attr = Buffer.Buffer(attr)
+                attr.version = Buffer.Buffer(attr.version)
                 console.log("after version attr - ", attr)
             }
         })
