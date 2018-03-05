@@ -193,6 +193,17 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
 
     // inputs[0][0].version = BtcApp.Buffer(inputs[0][0].version)
 
+    inputs.forEach(input => {
+        input.forEach(attr => {
+            console.log(attr)
+            if (attr === "version") {
+                console.log("before version attr - ", attr)
+                attr = Buffer.Buffer(attr)
+                console.log("after version attr - ", attr)
+            }
+        })
+    })
+
     const signedTx = await btc.createPaymentTransactionNew(inputs, [path.split('m/')[1]], changePath, outputScript).then( result => {
 
         console.log(result)
