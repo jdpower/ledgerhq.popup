@@ -195,21 +195,22 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
 
     inputs.forEach(input => {
         input.forEach(attr => {
-            console.log(attr)
             if (attr.version) {
                 attr.version = Buffer.Buffer(attr.version)
             }
         })
     })
 
-    const signedTx = await btc.createPaymentTransactionNew(inputs, [path.split('m/')[1]], changePath, outputScript).then(result => {
+    const signedTx = await btc.createPaymentTransactionNew(inputs, [path.split('m/')[1]], changePath, outputScript)
+    return signedTx
+    // .then(result => {
 
-        console.log(result)
-        return result
-    }).catch(error => {
-        console.error(error)
-        return error
-    })
+    //     console.log(result)
+    //     return result
+    // }).catch(error => {
+    //     console.error(error)
+    //     return error
+    // })
 }
 
 const splitBtcTransaction = async (btc, transactionHex) => {
@@ -253,16 +254,15 @@ function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScrip
     // console.log("outputScript - ", outputScript)
 
     
-    _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result, error) => {
-
-        if (error) {
-            displayResult(error)
-            throw new Error(error.message)
-        }
+    _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
 
         displayResult(result)
         console.log(result)
         // sendMessageToParentWindow(response, event, origin)
+    }).catch(error => {
+
+        displayResult(error)
+        console.error(error)
     })
 
 
