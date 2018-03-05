@@ -21,7 +21,7 @@
             } else if (event.data.action === "reqSignEthTransaction") {
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             } else if (event.data.action === "reqSignBtcTransaction") {
-                onBtcSignTransaction(path, event.data.utxo, event.data.tx, event.data.outputScript)
+                onBtcSignTransaction(path, event.data.utxo, event.data.tx, event.data.transactions, event.data.inputs, event.data.outputScript)
             }
         })
     }
@@ -191,7 +191,7 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
     console.log("changePath - ", changePath)
     console.log("outputScript - ", outputScript)
 
-    const signedTx = await btc.createPaymentTransactionNew(JSON.stringify(inputs), path.split('m/')[1], changePath, outputScript).then( result => {
+    const signedTx = await btc.createPaymentTransactionNew(inputs, path.split('m/')[1], changePath, outputScript).then( result => {
 
         console.log(result)
         return result
@@ -230,13 +230,16 @@ const signBtcTrasaction = async (path, UTXOs) => {
 }
 
 
-function onBtcSignTransaction(path, UTXOs, tx, outputScript) {
+function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScript) {
 
     console.log("UTXOs - ", UTXOs)
     console.log("tx - ", tx)
+    console.log("transactions - ", transactions)
+    console.log("inputs - ", inputs)
+    console.log("outputScript - ", outputScript)
 
     
-    _createPaymentTransactionNew(path, tx, undefined, outputScript)
+    _createPaymentTransactionNew(path, inputs, undefined, outputScript)
 
 
     // _serializeTransaction(path, tx).then(result => {
