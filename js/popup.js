@@ -21,7 +21,7 @@
             } else if (event.data.action === "reqSignEthTransaction") {
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             } else if (event.data.action === "reqSignBtcTransaction") {
-                onBtcSignTransaction(path, event.data.utxo, event.data.tx, event.data.transactions, event.data.inputs, event.data.outputScript)
+                onBtcSignTransaction(path, event, event.data.transactions, event.data.inputs, event.data.outputScript)
             }
         })
     }
@@ -245,7 +245,7 @@ const signBtcTrasaction = async (path, UTXOs) => {
 }
 
 
-function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScript) {
+function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
 
     // console.log("UTXOs - ", UTXOs)
     // console.log("tx - ", tx)
@@ -261,7 +261,7 @@ function onBtcSignTransaction(path, UTXOs, tx, transactions, inputs, outputScrip
         // sendMessageToParentWindow(response, event, origin)
     }).catch(error => {
 
-        displayResult(error)
+        displayResult(event.data.action, error)
         console.error(error)
     })
 
