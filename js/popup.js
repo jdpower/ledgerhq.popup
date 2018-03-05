@@ -196,7 +196,7 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
     inputs.forEach(input => {
         input.forEach(attr => {
             console.log(attr)
-            if (attr === "version") {
+            if (attr.version) {
                 console.log("before version attr - ", attr)
                 attr = Buffer.Buffer(attr)
                 console.log("after version attr - ", attr)
