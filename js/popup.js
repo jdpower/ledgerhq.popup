@@ -204,7 +204,37 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
 }
 
 
+const _signP2SHTransaction = async (path, inputs, associatedKeysets, outputScriptHex) => {
+
+    const transport = await getDevice(path)
+    const btc = new AppBtc.default(transport)
+
+    console.log("inputs - ", inputs)
+    console.log("associatedKeysets - ", associatedKeysets)
+    console.log("outputScriptHex - ", outputScriptHex)
+    
+    inputs.forEach(input => {
+        input.forEach(attr => {
+            if (attr.version) {
+                attr.version = Buffer.Buffer(attr.version)
+            }
+        })
+    })
+
+    const signedTx = await btc.signP2SHTransaction(inputs, associatedKeysets, outputScript)
+    return signedTx
+}
+
+
 function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
+
+    // _signP2SHTransaction(path, inputs, [path.split('m/')[1]], outputScript).then(result => {
+        
+    //     displayResult(event.data.action, result)
+    // }).catch(error => {
+
+    //     displayResult(event.data.action, error)
+    // })
 
     _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
 
