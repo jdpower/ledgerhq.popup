@@ -172,7 +172,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
         })
         .catch(error => {
 
-            displayResult(error)
+            displayResult(event.data.action, error)
             response.message = "failed"
             response.data = error
             response.data.result.success = false
@@ -191,8 +191,6 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
     console.log("changePath - ", changePath)
     console.log("outputScript - ", outputScript)
 
-    // inputs[0][0].version = BtcApp.Buffer(inputs[0][0].version)
-
     inputs.forEach(input => {
         input.forEach(attr => {
             if (attr.version) {
@@ -203,81 +201,19 @@ const _createPaymentTransactionNew = async (path, inputs, changePath, outputScri
 
     const signedTx = await btc.createPaymentTransactionNew(inputs, [path.split('m/')[1]], changePath, outputScript)
     return signedTx
-    // .then(result => {
-
-    //     console.log(result)
-    //     return result
-    // }).catch(error => {
-    //     console.error(error)
-    //     return error
-    // })
-}
-
-const splitBtcTransaction = async (btc, transactionHex) => {
-
-    const tx = await btc.splitTransaction(transactionHex, false, false)
-    console.log("splitBtcTransaction tx - ", tx)
-    return tx
-}
-
-const _serializeTransaction = async (path, transaction) => {
-
-    const transport = await getDevice(path)
-    const btc = new AppBtc.default(transport)
-    
-    console.log("transaction - ", transaction)
-
-    transaction.version = Buffer.Buffer("0")
-
-    const tx = await btc.serializeTransaction(transaction)
-    console.log("_serializeTransaction - ", tx)
-}
-
-const signBtcTrasaction = async (path, UTXOs) => {
-
-    const transport = await getDevice(path)
-    const btc = new AppBtc.default(transport)
-    
-    console.log("UTXOs - ", UTXOs)
-
-    const tx = await splitBtcTransaction(btc, toHex(JSON.stringify(UTXOs[0])))
-    console.log("returned tx - ", tx)
 }
 
 
 function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
 
-    // console.log("UTXOs - ", UTXOs)
-    // console.log("tx - ", tx)
-    // console.log("transactions - ", transactions)
-    // console.log("inputs - ", inputs)
-    // console.log("outputScript - ", outputScript)
-
-    
     _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
 
         displayResult(event.data.action, result)
-        console.log(result)
         // sendMessageToParentWindow(response, event, origin)
     }).catch(error => {
 
         displayResult(event.data.action, error)
-        console.error(error)
     })
-
-
-    // _serializeTransaction(path, tx).then(result => {
-    //     console.log("serializeTransaction result - ", result)
-    // }).catch(error => {
-    //     console.error("serializeTransaction error - ", error)
-    // })
-
-
-    // signBtcTrasaction(path, UTXOs).then(result => {
-    //     console.log("signBtcTrasaction result - ", result)
-    // }).catch(error => {
-    //     console.error("signBtcTrasaction error - ", error)
-    // })
 }
 
 
