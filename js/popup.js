@@ -116,7 +116,7 @@ function onGetEthAddress(ethPath, event, origin) {
     getEthAddress(ethPath)
         .then(result => {
 
-            // displayResult(result)
+            displayMessageInPopup(event.data.action, result)
             response.message = "success"
             response.address = result
             sendMessageToParentWindow(response, event, origin)
@@ -287,4 +287,17 @@ function displayResult(action, result) {
     //         break
     // }
     document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
+}
+
+
+function displayMessageInPopup(action, message) {
+
+    if (action === "reqEthAddress") {
+
+        const _message = "Confirm transaction details on Ledger Wallet"
+        let messageDom = document.getElementById("message")
+        messageDom.className = "message show"
+        
+        document.getElementById("result").innerHTML = _message
+    }
 }

@@ -1,17 +1,39 @@
 body {
     width: 100%;
     height: 600px;
+    background: #eeeeee;
 }
 
 header {
     top: 0;
-    background-color: #f2f2f2;
-    padding: 25px;    
+    background-color: #E0E0E0;
+    padding: 25px;
+    font-size: 1.4em;
+}
+
+header img {
+    float: left;
+    width: 30px;
+    height: 30px;
+  }
+
+header h1 {
+    position: relative;
+    top: 18px;
+    left: 10px;
 }
 
 .message {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    white-space: pre-wrap;
+    margin: 40px 15px;
+}
+
+.hide {
+    visibility:hidden;
+}
+
+.show {
+    display: block;
 }
 
 input[type=submit] {
@@ -37,8 +59,8 @@ input[type=submit] {
 }
 
 footer {
-    background-color: #f2f2f2;
-    padding: 25px;
+    background-color: #E0E0E0;
+    padding: 10px;
     position: fixed;
     bottom: 0;
     left: 0;
