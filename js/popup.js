@@ -286,6 +286,8 @@ function displayResult(action, result) {
     //         }
     //         break
     // }
+    let messageDom = document.getElementById("message")
+    messageDom.className = "message show"
     document.getElementById("result").innerHTML = result
     // document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
 }
