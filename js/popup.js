@@ -17,6 +17,8 @@
             if (event.data.action === "reqBtcAddress") {
                 onGetBtcAddress(path, event, origin)
             } else if (event.data.action === "reqEthAddress") {
+                const _message = "Confirm transaction details on Ledger Wallet"
+                displayMessageInPopup(event.data.action, _message)
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
@@ -297,10 +299,9 @@ function displayMessageInPopup(action, message) {
 
     if (action === "reqEthAddress") {
 
-        const _message = "Confirm transaction details on Ledger Wallet"
         let messageDom = document.getElementById("message")
         messageDom.className = "message show"
         
-        document.getElementById("result").innerHTML = _message
+        document.getElementById("result").innerHTML = message
     }
 }
