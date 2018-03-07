@@ -286,7 +286,8 @@ function displayResult(action, result) {
     //         }
     //         break
     // }
-    document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
+    document.getElementById("result").innerHTML = result
+    // document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
 }
 
 
