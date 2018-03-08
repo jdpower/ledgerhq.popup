@@ -18,6 +18,7 @@
                 onGetBtcAddress(path, event, origin)
             } else if (event.data.action === "reqEthAddress") {
                 const _message = "Confirm transaction details on Ledger Wallet"
+                displayMessageInPopup(event.data.action, "")
                 displayMessageInPopup(event.data.action, _message)
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
@@ -230,22 +231,16 @@ const _signP2SHTransaction = async (path, inputs, associatedKeysets, outputScrip
 
 function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
 
-    // _signP2SHTransaction(path, inputs, [path.split('m/')[1]], outputScript).then(result => {
-        
+    displayResult(event.data.action, { message: "BTC transaction not available" })
+
+    // _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
+
     //     displayResult(event.data.action, result)
+    //     // sendMessageToParentWindow(response, event, origin)
     // }).catch(error => {
 
     //     displayResult(event.data.action, error)
     // })
-
-    _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
-
-        displayResult(event.data.action, result)
-        // sendMessageToParentWindow(response, event, origin)
-    }).catch(error => {
-
-        displayResult(event.data.action, error)
-    })
 }
 
 
@@ -292,6 +287,18 @@ function displayResult(action, result) {
     messageDom.className = "message show"
     document.getElementById("result").innerHTML = result
     // document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
+}
+
+
+function clearMessageInPopup(action, message) {
+
+    if (action === "reqEthAddress") {
+
+        let messageDom = document.getElementById("message")
+        messageDom.className = "message hide"
+        
+        document.getElementById("result").innerHTML = message
+    }
 }
 
 
