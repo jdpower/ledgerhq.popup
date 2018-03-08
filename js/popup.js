@@ -14,18 +14,21 @@
             const path = event.data.path
             const origin = "null" !== event.origin ? event.origin : "*"
 
+            const _message
+            displayMessageInPopup(event.data.action, "")
             if (event.data.action === "reqBtcAddress") {
                 onGetBtcAddress(path, event, origin)
             } else if (event.data.action === "reqEthAddress") {
-                const _message = "Confirm transaction details on Ledger Wallet"
-                displayMessageInPopup(event.data.action, "")
-                displayMessageInPopup(event.data.action, _message)
+                _message = "Approve address request Ledger Wallet"
                 onGetEthAddress(path, event, origin)
             } else if (event.data.action === "reqSignEthTransaction") {
+                _message = "Confirm transaction details on Ledger Wallet"
                 onEthSignTransaction(path, event.data.serializedTx, event.data.txParams, event, origin)
             } else if (event.data.action === "reqSignBtcTransaction") {
+                _message = "BTC transaction signing not available"
                 onBtcSignTransaction(path, event, event.data.transactions, event.data.inputs, event.data.outputScript)
             }
+            displayMessageInPopup(event.data.action, _message)
         })
     }
 
@@ -230,8 +233,6 @@ const _signP2SHTransaction = async (path, inputs, associatedKeysets, outputScrip
 
 
 function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
-
-    displayResult(event.data.action, { message: "BTC transaction not available" })
 
     // _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
 
