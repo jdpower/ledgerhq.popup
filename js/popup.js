@@ -14,7 +14,7 @@
             const path = event.data.path
             const origin = "null" !== event.origin ? event.origin : "*"
 
-            const _message
+            let _message = ""
             displayMessageInPopup(event.data.action, "")
             if (event.data.action === "reqBtcAddress") {
                 onGetBtcAddress(path, event, origin)
