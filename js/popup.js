@@ -218,7 +218,7 @@ const _signP2SHTransaction = async (path, inputs, associatedKeysets, outputScrip
     console.log("inputs - ", inputs)
     console.log("associatedKeysets - ", associatedKeysets)
     console.log("outputScriptHex - ", outputScriptHex)
-    
+
     inputs.forEach(input => {
         input.forEach(attr => {
             if (attr.version) {
@@ -246,11 +246,11 @@ function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
 
 
 function toHex(str) {
-	var hex = ""
-	for(var i = 0; i < str.length; i++) {
-		hex += ''+str.charCodeAt(i).toString(16)
-	}
-	return hex
+    var hex = ""
+    for (var i = 0; i < str.length; i++) {
+        hex += '' + str.charCodeAt(i).toString(16)
+    }
+    return hex
 }
 
 
@@ -297,7 +297,7 @@ function clearMessageInPopup(action, message) {
 
         let messageDom = document.getElementById("message")
         messageDom.className = "message hide"
-        
+
         document.getElementById("result").innerHTML = message
     }
 }
@@ -305,11 +305,8 @@ function clearMessageInPopup(action, message) {
 
 function displayMessageInPopup(action, message) {
 
-    if (action === "reqEthAddress") {
+    let messageDom = document.getElementById("message")
+    messageDom.className = "message show"
 
-        let messageDom = document.getElementById("message")
-        messageDom.className = "message show"
-        
-        document.getElementById("result").innerHTML = message
-    }
+    document.getElementById("result").innerHTML = message
 }
