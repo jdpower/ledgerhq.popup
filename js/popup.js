@@ -258,8 +258,9 @@ function sendMessageToParentWindow(response, event, origin) {
     console.log(response)
     if (response.data.name === "TransportError") {
         displayMessageInPopup(event.data.action, response.data.message + "; please close the popup!")
+    } else {
+        event.source.postMessage(response, origin)
     }
-    event.source.postMessage(response, origin)
 }
 
 
