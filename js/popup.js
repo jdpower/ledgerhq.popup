@@ -263,7 +263,7 @@ function toHex(str) {
 function sendMessageToParentWindow(response, event, origin) {
 
     console.log(response)
-    event.source.postMessage(JSON.parse(JSON.stringify(response)), origin)
+    event.source.postMessage(response, origin)
 }
 
 
