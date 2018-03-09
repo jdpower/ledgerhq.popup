@@ -80,20 +80,13 @@ function onGetBtcAddress(btcPath, event, origin) {
 
     getBtcAddress(btcPath).then(result => {
 
-        // const data = {
-        //     metaData: {
-        //         type: event.data.action,
-        //         address: result
-        //     }
-        // }
-        // displayResult(event.data.action, data)
         response.message = "success"
         response.address = result
         sendMessageToParentWindow(response, event, origin)
         window.close()
     }).catch(error => {
 
-        displayResult(event.data.action, error)
+        displayMessageInPopup(event.data.action, error)
         response.message = "failed"
         response.data = error
         sendMessageToParentWindow(response, event, origin)
@@ -132,7 +125,7 @@ function onGetEthAddress(ethPath, event, origin) {
         })
         .catch(error => {
 
-            displayResult(event.data.action, error)
+            displayMessageInPopup(event.data.action, error)
             response.message = "failed"
             response.data = error
             sendMessageToParentWindow(response, event, origin)
@@ -166,7 +159,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
     signEthTransaction(ethPath, serializedTx)
         .then(result => {
 
-            displayResult(event.data.action, result)
+            displayMessageInPopup(event.data.action, result)
             const data = {
                 tx: txParams,
                 result: result
@@ -182,7 +175,7 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
         })
         .catch(error => {
 
-            displayResult(event.data.action, error)
+            displayMessageInPopup(event.data.action, error)
             response.message = "failed"
             response.data = error
             response.data.result = {
@@ -242,11 +235,11 @@ function onBtcSignTransaction(path, event, transactions, inputs, outputScript) {
 
     // _createPaymentTransactionNew(path, inputs, undefined, outputScript).then((result) => {
 
-    //     displayResult(event.data.action, result)
+    //     displayMessageInPopup(event.data.action, result)
     //     // sendMessageToParentWindow(response, event, origin)
     // }).catch(error => {
 
-    //     displayResult(event.data.action, error)
+    //     displayMessageInPopup(event.data.action, error)
     // })
 }
 
@@ -263,38 +256,12 @@ function toHex(str) {
 function sendMessageToParentWindow(response, event, origin) {
 
     console.log(response)
+    if (response.data.name === "TransportError") {
+        displayMessageInPopup(event.data.action, response.data.message + "; please close the popup!")
+    }
     event.source.postMessage(response, origin)
 }
 
-
-function displayResult(action, result) {
-
-    // result is an JSON object
-    // format error before displaying to user
-    // 
-    console.log(result)
-    // let messageToDisplay = {}
-    // const type = result.metaData.type
-
-    // switch (type) {
-    //     case "DEVICE_INELIGIBLE":
-    //         messageToDisplay = {
-    //             request: action,
-    //             message: "please select the correct app, as in BTC / Bcash / ETH"
-    //         } 
-    //         break
-    //     default:
-    //         messageToDisplay = {
-    //             request: action,
-    //             message: result
-    //         }
-    //         break
-    // }
-    let messageDom = document.getElementById("message")
-    messageDom.className = "message show"
-    document.getElementById("result").innerHTML = result
-    // document.getElementById("result").innerHTML = JSON.stringify(result, undefined, 4)
-}
 
 
 function clearMessageInPopup(action, message) {
@@ -311,8 +278,8 @@ function clearMessageInPopup(action, message) {
 
 function displayMessageInPopup(action, message) {
 
+    console.log(message)
     let messageDom = document.getElementById("message")
     messageDom.className = "message show"
-
     document.getElementById("result").innerHTML = message
 }
