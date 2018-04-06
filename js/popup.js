@@ -28,6 +28,9 @@
                 } else if (event.data.action === "reqSignBtcTransaction") {
                     _message = "BTC transaction signing not available"
                     onBtcSignTransaction(path, event, event.data.transactions, event.data.inputs, event.data.outputScript)
+                } else if (event.data.action === "reqSplitTransaction") {
+                    _message = "BTC transaction signing not available"
+                    onBtcSplitTransaction(path, event, event.data.transactionHex, event.data.isSegwitSupport, event.data.hasTimeStamp)
                 }
                 displayMessageInPopup(event.data.action, _message)
             }
@@ -91,6 +94,50 @@ function onGetBtcAddress(btcPath, event, origin) {
         response.data = error
         sendMessageToParentWindow(response, event, origin)
     })
+
+}
+
+
+const splitTransaction = async (path, transactionHex) => {
+    const transport = await getDevice(path)
+    const btc = new AppBtc.default(transport)
+    const result = await btc.splitTransaction()
+    return result.bitcoinAddress
+}
+
+
+function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, hasTimeStamp) {
+
+    let response = {
+        from: window.name,
+        action: event.data.action
+    }
+    
+    splitTransaction(btcPath, transactionHex, isSegwitSupport, hasTimeStamp)
+        .then(result => {
+            displayMessageInPopup(event.data.action, result)
+            const data = {
+                txHex: transactionHex,
+                result: result
+            }
+
+            response.message = "success"
+            response.data = data
+            response.data.result = {
+                success: true
+            }
+            sendMessageToParentWindow(response, event, origin)
+            window.close()
+        })
+        .catch(error => {
+            displayMessageInPopup(event.data.action, error)
+            response.message = "failed"
+            response.data = error
+            response.data.result = {
+                success: false
+            }
+            sendMessageToParentWindow(response, event, origin)
+        })
 
 }
 
@@ -262,7 +309,6 @@ function sendMessageToParentWindow(response, event, origin) {
         event.source.postMessage(response, origin)
     }
 }
-
 
 
 function clearMessageInPopup(action, message) {
