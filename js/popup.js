@@ -98,11 +98,11 @@ function onGetBtcAddress(btcPath, event, origin) {
 }
 
 
-const splitTransaction = async (path, transactionHex) => {
+const splitTransaction = async (path, transactionHex, isSegwitSupport, hasTimeStamp) => {
     const transport = await getDevice(path)
     const btc = new AppBtc.default(transport)
-    const result = await btc.splitTransaction(transactionHex)
-    return result.bitcoinAddress
+    const tx = await btc.splitTransaction(transactionHex, isSegwitSupport, hasTimeStamp)
+    return tx
 }
 
 
