@@ -101,7 +101,7 @@ function onGetBtcAddress(btcPath, event, origin) {
 const splitTransaction = async (path, transactionHex) => {
     const transport = await getDevice(path)
     const btc = new AppBtc.default(transport)
-    const result = await btc.splitTransaction()
+    const result = await btc.splitTransaction(transactionHex)
     return result.bitcoinAddress
 }
 
