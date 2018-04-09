@@ -29,7 +29,7 @@
                     _message = "BTC transaction signing not available"
                     onBtcSignTransaction(path, event, event.data.transactions, event.data.inputs, event.data.outputScript)
                 } else if (event.data.action === "reqSplitTransaction") {
-                    _message = "BTC transaction signing not available"
+                    _message = "Spliting BTC transaction"
                     onBtcSplitTransaction(path, event, event.data.transactionHex, event.data.isSegwitSupport, event.data.hasTimeStamp)
                 }
                 displayMessageInPopup(event.data.action, _message)
