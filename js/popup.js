@@ -118,7 +118,7 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
             displayMessageInPopup(event.data.action, result)
             const data = {
                 txHex: transactionHex,
-                result: result
+                tx: result
             }
 
             response.message = "success"
