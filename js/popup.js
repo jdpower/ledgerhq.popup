@@ -118,7 +118,7 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
         .then(result => {
             displayMessageInPopup(event.data.action, result)
             response.txHex = transactionHex
-            response.result = result
+            // response.result = result
             response.message = "success"
             response.success = true
             sendMessageToParentWindow(response, event, origin)
@@ -131,7 +131,6 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
             response.success = false
             sendMessageToParentWindow(response, event, origin)
         })
-
 }
 
 
@@ -295,7 +294,7 @@ function sendMessageToParentWindow(response, event, origin) {
             displayMessageInPopup(event.data.action, response.result.message + "; please close the popup!")
         }
     }  else {
-        response = JSON.stringify(response.result.version)
+        response = JSON.stringify(response)
         event.source.postMessage(response, origin)
     }
 }
