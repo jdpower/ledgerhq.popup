@@ -30,7 +30,7 @@
                     onBtcSignTransaction(path, event, event.data.transactions, event.data.inputs, event.data.outputScript)
                 } else if (event.data.action === "reqSplitTransaction") {
                     _message = "Spliting BTC transaction"
-                    onBtcSplitTransaction(path, event, event.data.transactionHex, event.data.isSegwitSupport, event.data.hasTimeStamp)
+                    onBtcSplitTransaction(path, event, event.data.transactionHex, event.data.isSegwitSupport, event.data.hasTimeStamp, origin)
                 }
                 displayMessageInPopup(event.data.action, _message)
             }
@@ -107,7 +107,9 @@ const splitTransaction = async (path, transactionHex, isSegwitSupport, hasTimeSt
 }
 
 
-function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, hasTimeStamp) {
+function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, hasTimeStamp, origin) {
+
+    if (btcPath === "") throw "no wallet path"
 
     let response = {
         from: window.name,
