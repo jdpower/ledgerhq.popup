@@ -86,7 +86,7 @@ function onGetBtcAddress(btcPath, event, origin) {
         response.message = "success"
         response.success = true
         sendMessageToParentWindow(response, event, origin)
-        window.close()
+        // window.close()
     }).catch(error => {
 
         displayMessageInPopup(event.data.action, error)
