@@ -111,7 +111,8 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
 
     let response = {
         from: window.name,
-        action: event.data.action
+        action: event.data.action,
+        uniqueId: event.data.uniqueId
     }
     
     splitTransaction(btcPath, transactionHex, isSegwitSupport, hasTimeStamp)
