@@ -295,7 +295,7 @@ function sendMessageToParentWindow(response, event, origin) {
             displayMessageInPopup(event.data.action, response.result.message + "; please close the popup!")
         }
     }  else {
-        response = JSON.stringify(response.version)
+        response = JSON.stringify(response.result.version)
         event.source.postMessage(response.result.version, origin)
     }
 }
