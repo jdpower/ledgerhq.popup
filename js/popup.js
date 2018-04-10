@@ -82,16 +82,17 @@ function onGetBtcAddress(btcPath, event, origin) {
     }
 
     getBtcAddress(btcPath).then(result => {
-
+        response.result = result
         response.message = "success"
-        response.address = result
+        response.success = true
         sendMessageToParentWindow(response, event, origin)
         window.close()
     }).catch(error => {
 
         displayMessageInPopup(event.data.action, error)
+        response.result = error
         response.message = "failed"
-        response.data = error
+        response.success = false
         sendMessageToParentWindow(response, event, origin)
     })
 
@@ -165,16 +166,18 @@ function onGetEthAddress(ethPath, event, origin) {
         .then(result => {
 
             displayMessageInPopup(event.data.action, result)
+            response.result = result
             response.message = "success"
-            response.address = result
+            response.success = true
             sendMessageToParentWindow(response, event, origin)
             window.close()
         })
         .catch(error => {
 
             displayMessageInPopup(event.data.action, error)
+            response.result = error
             response.message = "failed"
-            response.data = error
+            response.success = false
             sendMessageToParentWindow(response, event, origin)
         })
 
@@ -207,27 +210,19 @@ function onEthSignTransaction(ethPath, serializedTx, txParams, event, origin) {
         .then(result => {
 
             displayMessageInPopup(event.data.action, result)
-            const data = {
-                tx: txParams,
-                result: result
-            }
-
+            response.tx = txParams
+            response.result = result
             response.message = "success"
-            response.data = data
-            response.data.result = {
-                success: true
-            }
+            response.success = true
             sendMessageToParentWindow(response, event, origin)
             window.close()
         })
         .catch(error => {
 
             displayMessageInPopup(event.data.action, error)
+            response.result = error
             response.message = "failed"
-            response.data = error
-            response.data.result = {
-                success: false
-            }
+            response.success = false
             sendMessageToParentWindow(response, event, origin)
         })
 }
@@ -303,9 +298,11 @@ function toHex(str) {
 function sendMessageToParentWindow(response, event, origin) {
 
     console.log(response)
-    if (response.data.name === "TransportError") {
-        displayMessageInPopup(event.data.action, response.data.message + "; please close the popup!")
-    } else {
+    if (!response.success) {
+        if (response.result.name === "TransportError") {
+            displayMessageInPopup(event.data.action, response.result.message + "; please close the popup!")
+        }
+    }  else {
         response = JSON.stringify(response)
         event.source.postMessage(response, origin)
     }
