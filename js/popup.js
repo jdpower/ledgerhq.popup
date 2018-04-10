@@ -82,11 +82,12 @@ function onGetBtcAddress(btcPath, event, origin) {
     }
 
     getBtcAddress(btcPath).then(result => {
+        displayMessageInPopup(event.data.action, result)
         response.result = result
         response.message = "success"
         response.success = true
         sendMessageToParentWindow(response, event, origin)
-        // window.close()
+        window.close()
     }).catch(error => {
 
         displayMessageInPopup(event.data.action, error)
@@ -121,7 +122,7 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
         .then(result => {
             displayMessageInPopup(event.data.action, result)
             response.txHex = transactionHex
-            // response.result = result
+            response.result = result
             response.message = "success"
             response.success = true
             sendMessageToParentWindow(response, event, origin)
