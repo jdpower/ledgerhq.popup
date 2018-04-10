@@ -117,29 +117,21 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
     splitTransaction(btcPath, transactionHex, isSegwitSupport, hasTimeStamp)
         .then(result => {
             displayMessageInPopup(event.data.action, result)
-            const data = {
-                txHex: transactionHex,
-                tx: result
-            }
-
+            response.txHex = transactionHex
+            response.result = result
             response.message = "success"
-            response.data = data
-            response.data.result = {
-                success: true
-            }
+            response.success = true
             sendMessageToParentWindow(response, event, origin)
             // window.close()
         })
         .catch(error => {
             displayMessageInPopup(event.data.action, error)
+            response.result = error
             response.message = "failed"
-            response.data = error
-            response.data.result = {
-                success: false
-            }
+            response.success = false
             sendMessageToParentWindow(response, event, origin)
         })
-
+        
 }
 
 
