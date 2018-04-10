@@ -126,7 +126,7 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
             response.message = "success"
             response.success = true
             sendMessageToParentWindow(response, event, origin)
-            // window.close()
+            window.close()
         })
         .catch(error => {
             displayMessageInPopup(event.data.action, error)
