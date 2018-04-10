@@ -296,7 +296,7 @@ function sendMessageToParentWindow(response, event, origin) {
         }
     }  else {
         response = JSON.stringify(response.version)
-        event.source.postMessage(response.version, origin)
+        event.source.postMessage(response.result.version, origin)
     }
 }
 
