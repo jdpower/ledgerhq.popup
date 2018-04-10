@@ -131,7 +131,7 @@ function onBtcSplitTransaction(btcPath, event, transactionHex, isSegwitSupport, 
             response.success = false
             sendMessageToParentWindow(response, event, origin)
         })
-        
+
 }
 
 
@@ -295,8 +295,8 @@ function sendMessageToParentWindow(response, event, origin) {
             displayMessageInPopup(event.data.action, response.result.message + "; please close the popup!")
         }
     }  else {
-        response = JSON.stringify(response)
-        event.source.postMessage(response, origin)
+        response = JSON.stringify(response.version)
+        event.source.postMessage(response.version, origin)
     }
 }
 
