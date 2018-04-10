@@ -306,6 +306,7 @@ function sendMessageToParentWindow(response, event, origin) {
     if (response.data.name === "TransportError") {
         displayMessageInPopup(event.data.action, response.data.message + "; please close the popup!")
     } else {
+        response = JSON.stringify(response)
         event.source.postMessage(response, origin)
     }
 }
