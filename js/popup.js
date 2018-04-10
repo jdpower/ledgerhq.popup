@@ -328,5 +328,5 @@ function displayMessageInPopup(action, message) {
     console.log(message)
     let messageDom = document.getElementById("message")
     messageDom.className = "message show"
-    document.getElementById("result").innerHTML = JSON.stringify(message, undefined, 3)
+    document.getElementById("result").innerHTML = JSON.stringify(message)
 }
